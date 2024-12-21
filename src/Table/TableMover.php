@@ -468,16 +468,13 @@ class TableMover
         $exportSqlPlugin->useSqlBackquotes(true);
 
         $GLOBALS['no_constraints_comments'] = true;
-        // set the value of global sql_auto_increment variable
-        if (isset($_POST['sql_auto_increment'])) {
-            $GLOBALS['sql_auto_increment'] = $_POST['sql_auto_increment'];
-        }
+        $exportSqlPlugin->setAutoIncrement(isset($_POST['sql_auto_increment']) && (bool) $_POST['sql_auto_increment']);
 
         $isView = (new Table($sourceTable, $sourceDb, $this->dbi))->isView();
         /**
          * The old structure of the table.
          */
-        $sqlStructure = $exportSqlPlugin->getTableDef($sourceDb, $sourceTable, false, false, $isView);
+        $sqlStructure = $exportSqlPlugin->getTableDef($sourceDb, $sourceTable, false, $isView);
 
         // -----------------------------------------------------------------
         // Phase 0: Preparing structures used.
